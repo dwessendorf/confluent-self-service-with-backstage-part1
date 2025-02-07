@@ -26,6 +26,7 @@ module "confluent_environment" {
   env_name = var.environment_name
 }
 
+
 module "confluent_cluster" {
   source         = "../../modules/confluent_cloud_cluster"
   cluster_name   = var.cluster_name
