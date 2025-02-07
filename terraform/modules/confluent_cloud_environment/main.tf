@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    confluentcloud = {
-      source  = "confluentinc/confluentcloud"
-      version = "~> 1.0"
+    confluent = {
+      source  = "confluentinc/confluent"
+      version = ">= 0.2.0"  # Adjust this version constraint as needed.
     }
   }
 }
@@ -12,6 +12,6 @@ variable "env_name" {
   type        = string
 }
 
-resource "confluentcloud_environment" "this" {
+resource "confluent_environment" "this" {
   display_name = var.env_name
 }

@@ -1,12 +1,11 @@
 terraform {
   required_providers {
-    confluentcloud = {
-      source  = "confluentinc/confluentcloud"
-      version = "~> 1.0"
+    confluent = {
+      source  = "confluentinc/confluent"
+      version = ">= 0.2.0"  # Adjust this version constraint as needed.
     }
   }
 }
-
 variable "cluster_name" {
   description = "The name of the Confluent Cloud Kafka Cluster."
   type        = string
@@ -17,7 +16,7 @@ variable "environment_id" {
   type        = string
 }
 
-resource "confluentcloud_kafka_cluster" "this" {
+resource "confluent_cloud_kafka_cluster" "this" {
   display_name   = var.cluster_name
   environment_id = var.environment_id
   cloud          = "GCP"        # For this example, we use GCP
