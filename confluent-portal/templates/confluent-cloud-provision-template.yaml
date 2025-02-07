@@ -1,0 +1,48 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: confluent-cloud-provision
+  title: Provision Confluent Cloud Environment + Cluster
+  description: >
+    A template to generate or update Terraform config for a new Confluent Cloud environment + cluster.
+spec:
+  owner: team-xyz
+  type: service  # or "confluent-resource", any classification
+
+  parameters:
+    - title: Confluent Cloud Settings
+      properties:
+        environment_name:
+          title: Environment Name
+          type: string
+          description: Name of the new Confluent Cloud Environment
+          default: dev-environment
+        cluster_name:
+          title: Cluster Name
+          type: string
+          description: Name of the new Confluent Cloud Kafka cluster
+          default: dev-cluster
+
+  steps:
+    - id: fetch
+      name: Fetch template
+      action: backstage:fetch:template
+      input:
+        url: ./skeleton
+        values:
+          environment_name: ${{ parameters.environment_name }}
+          cluster_name: ${{ parameters.cluster_name }}
+
+    - id: commit
+      name: Commit changes back to GitHub
+      action: github:publish:repository
+      input:
+        repoUrl: github.com?owner=my-org&repo=my-terraform-repo
+        # Adjust the path accordingly if your Terraform code is in a subdir
+        branch: main
+        filepath: .
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+  output:
+    environmentName: ${{ parameters.environment_name }}
+    clusterName: ${{ parameters.cluster_name }}

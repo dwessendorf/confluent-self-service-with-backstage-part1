@@ -78,8 +78,10 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
-      - type: github-org
+    - type: github-org
       target: https://github.com/dwessendorf
+    - type: github
+      target: "https://github.com/dwessendorf/confluent-self-service-with-backstage-part1/blob/main/confluent-portal/templates/confluent-cloud-provision-template.yaml"
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     # - type: file
     #   target: ../../examples/entities.yaml
