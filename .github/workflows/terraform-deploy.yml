@@ -9,6 +9,9 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    env:
+      CONFLUENT_CLOUD_API_KEY: ${{ secrets.CONFLUENT_CLOUD_API_KEY }}
+      CONFLUENT_CLOUD_API_SECRET: ${{ secrets.CONFLUENT_CLOUD_API_SECRET }}
 
     steps:
       - name: Checkout Repository
