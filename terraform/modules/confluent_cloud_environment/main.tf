@@ -15,3 +15,7 @@ variable "env_name" {
 resource "confluent_environment" "this" {
   display_name = var.env_name
 }
+
+output "environment_id" {
+  value = confluent_environment.this.id
+}

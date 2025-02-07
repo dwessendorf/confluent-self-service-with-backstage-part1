@@ -16,11 +16,17 @@ variable "environment_id" {
   type        = string
 }
 
-resource "confluent_cloud_kafka_cluster" "this" {
+resource "confluent_kafka_cluster" "this" {
   display_name   = var.cluster_name
-  environment_id = var.environment_id
+  environment {
+    id = var.environment_id
+  }
   cloud          = "GCP"        # For this example, we use GCP
-  region         = "us-central1" # Adjust as needed
+  region         = "europe-west3" # Adjust as needed
   availability   = "SINGLE_ZONE"
-  capacity       = 2             # Example value, adjust as needed
+  basic {}          # Example value, adjust as needed
+}
+
+output "cluster_id" {
+  value = confluent_kafka_cluster.this.id
 }

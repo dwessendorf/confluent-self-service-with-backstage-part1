@@ -21,7 +21,7 @@ variable "cluster_name" {
   default = "dev-cluster"
 }
 
-module "confluent_env" {
+module "confluent_environment" {
   source   = "../../modules/confluent_cloud_environment"
   env_name = var.environment_name
 }
@@ -29,5 +29,5 @@ module "confluent_env" {
 module "confluent_cluster" {
   source         = "../../modules/confluent_cloud_cluster"
   cluster_name   = var.cluster_name
-  environment_id = module.confluent_env.this.id
+  environment_id = module.confluent_environment.environment_id
 }
