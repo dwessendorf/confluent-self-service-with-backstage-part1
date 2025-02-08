@@ -23,7 +23,7 @@ spec:
           description: Name of the new Confluent Cloud Kafka cluster
           default: dev-cluster
 
-  steps:
+
 steps:
    - id: fetch-base
      name: Fetch Base
