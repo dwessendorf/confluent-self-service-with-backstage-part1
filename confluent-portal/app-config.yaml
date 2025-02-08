@@ -72,16 +72,38 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
-  import:
-    entityFilename: catalog-info.yaml
-    pullRequestBranchName: backstage-integration
-  rules:
-    - allow: [Component, System, API, Resource, Location]
-  locations:
-    - type: github-org
-      target: https://github.com/dwessendorf
-    - type: github
-      target: "https://github.com/dwessendorf/confluent-self-service-with-backstage-part1/blob/main/confluent-portal/templates/confluent-cloud-provision-template.yaml"
+    github:
+      # the provider ID can be any camelCase string
+      providerId:
+        organization: 'dwessendorf' # string
+        catalogPath: '/catalog-info.yaml' # string
+        filters:
+          branch: 'main' # string
+          repository: 'confluent-self-service-with-backstage-part1' # Regex
+        schedule: # same options as in SchedulerServiceTaskScheduleDefinition
+          # supports cron, ISO duration, "human duration" as used in code
+          frequency: { minutes: 30 }
+          # supports ISO duration, "human duration" as used in code
+          timeout: { minutes: 3 }
+    processing:
+    eventStream:
+      enabled: false
+      # customProviderId:
+      #   organization: 'new-org' # string
+      #   catalogPath: '/custom/path/catalog-info.yaml' # string
+      #   filters: # optional filters
+      #     branch: 'develop' # optional string
+      #     repository: '.*' # optional Regex
+  # import:
+  #   entityFilename: catalog-info.yaml
+  #   pullRequestBranchName: backstage-integration
+  # rules:
+  #   - allow: [Component, System, API, Resource, Location]
+  # locations:
+  #   - type: github-org
+  #     target: https://github.com/dwessendorf
+  #   - type: github
+  #     target: "https://github.com/dwessendorf/confluent-self-service-with-backstage-part1/blob/main/confluent-portal/templates/confluent-cloud-provision-template.yaml"
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     # - type: file
     #   target: ../../examples/entities.yaml
