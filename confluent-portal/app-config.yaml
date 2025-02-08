@@ -30,6 +30,9 @@ backend:
   database:
     client: better-sqlite3
     connection: ':memory:'
+  reading:
+    allow:
+      - host: raw.githubusercontent.com
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -72,65 +75,15 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
-    github:
-      # the provider ID can be any camelCase string
-      providerId:
-        organization: 'dwessendorf' # string
-        catalogPath: '/catalog-info.yaml' # string
-        filters:
-          branch: 'main' # string
-          repository: 'confluent-self-service-with-backstage-part1' # Regex
-        schedule: # same options as in SchedulerServiceTaskScheduleDefinition
-          # supports cron, ISO duration, "human duration" as used in code
-          frequency: { minutes: 30 }
-          # supports ISO duration, "human duration" as used in code
-          timeout: { minutes: 3 }
-    processing:
-    eventStream:
-      enabled: false
-      # customProviderId:
-      #   organization: 'new-org' # string
-      #   catalogPath: '/custom/path/catalog-info.yaml' # string
-      #   filters: # optional filters
-      #     branch: 'develop' # optional string
-      #     repository: '.*' # optional Regex
-  # import:
-  #   entityFilename: catalog-info.yaml
-  #   pullRequestBranchName: backstage-integration
-  # rules:
-  #   - allow: [Component, System, API, Resource, Location]
-  # locations:
-  #   - type: github-org
-  #     target: https://github.com/dwessendorf
-  #   - type: github
-  #     target: "https://github.com/dwessendorf/confluent-self-service-with-backstage-part1/blob/main/confluent-portal/templates/confluent-cloud-provision-template.yaml"
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    # - type: file
-    #   target: ../../examples/entities.yaml
+  locations:
+    - type: url
+      target: "https://raw.githubusercontent.com/dwessendorf/confluent-self-service-with-backstage-part1/main/confluent-portal/templates/confluent-cloud-provision-template.yaml"
+      rules:
+        - allow: [Template]
+  rules:
+    - allow: [Template, Component, API, Resource, Location]
 
-    # # Local example template
-    # - type: file
-    #   target: ../../examples/template/template.yaml
-    #   rules:
-    #     - allow: [Template]
-
-    # # Local example organizational data
-    # - type: file
-    #   target: ../../examples/org.yaml
-    #   rules:
-    #     - allow: [User, Group]
-
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-
-    ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
-
-kubernetes:
+#kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework

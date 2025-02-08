@@ -7,7 +7,7 @@ metadata:
     A template to generate or update Terraform config for a new Confluent Cloud environment + cluster.
 spec:
   owner: team-xyz
-  type: service  # or "confluent-resource", any classification
+  type: template
 
   parameters:
     - title: Confluent Cloud Settings
@@ -24,25 +24,23 @@ spec:
           default: dev-cluster
 
   steps:
-    - id: fetch
-      name: Fetch template
-      action: backstage:fetch:template
-      input:
+steps:
+   - id: fetch-base
+     name: Fetch Base
+     action: fetch:template
+     input:
         url: ./skeleton
         values:
           environment_name: ${{ parameters.environment_name }}
           cluster_name: ${{ parameters.cluster_name }}
-
-    - id: commit
-      name: Commit changes back to GitHub
-      action: github:publish:repository
-      input:
-        repoUrl: github.com?owner=my-org&repo=my-terraform-repo
-        # Adjust the path accordingly if your Terraform code is in a subdir
+   - id: commit
+     name: Commit changes back to GitHub
+     action: github:publish:repository
+     input:
+        repoUrl: github.com?owner=dwessendorf&repo=confluent-self-service-with-backstage-part1
         branch: main
         filepath: .
         token: ${{ secrets.GITHUB_TOKEN }}
-
-  output:
-    environmentName: ${{ parameters.environment_name }}
-    clusterName: ${{ parameters.cluster_name }}
+     output:
+       environmentName: ${{ parameters.environment_name }}
+       clusterName: ${{ parameters.cluster_name }}
